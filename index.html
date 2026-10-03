@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a32">
+  <meta name="description" content="Explore os resultados simulados da pilha PEMFC alimentada por hidrogênio produzido a partir de alumínio e água.">
+  <title>AluH₂ PEMFC Explorer | Simulador de pilha a combustível</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data/model-v3.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Pular para o conteúdo</a>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="AluH₂ PEMFC Explorer — início">
+      <span class="brand-mark" aria-hidden="true">Al<span>H₂</span></span>
+      <span class="brand-name">AluH₂ <b>PEMFC</b> Explorer</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a href="#levels" data-i18n="navLevels">Quatro níveis</a>
+      <a href="#explore" data-i18n="navExplore">Explorar dados</a>
+      <a href="#equations" data-i18n="navEquations">Equações</a>
+      <a href="#about" data-i18n="navAbout">Sobre o modelo</a>
+    </nav>
+    <div class="language-switch" role="group" aria-label="Idioma / Language">
+      <button type="button" id="lang-pt" class="lang-button is-active" aria-pressed="true">PT</button>
+      <button type="button" id="lang-en" class="lang-button" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="live-dot"></span><span data-i18n="heroEyebrow">LABORATÓRIO INTERATIVO · MODELO PEMFC</span></div>
+          <h1 id="hero-title" data-i18n="heroTitle">Do alumínio reciclado à potência líquida.</h1>
+          <p class="hero-lede" data-i18n="heroLede">Explore como o hidrogênio produzido pela reação Al–água alimenta uma pilha PEMFC — e como cada decisão geométrica altera o resultado simulado.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#levels"><span data-i18n="heroCta">Acompanhar a otimização</span><span aria-hidden="true">↓</span></a>
+            <span class="hero-note" data-i18n="heroNote">Resultados simulados · volume de referência: 1 L</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="hero-core"><span>H₂</span><small>PEMFC</small></div>
+          <span class="atom atom-al">Al</span><span class="atom atom-h">H₂</span><span class="atom atom-o">O₂</span>
+          <span class="art-caption">Al → H₂ → W<sub>net</sub></span>
+        </div>
+      </div>
+      <div class="hero-foot">
+        <span><i class="status-chip chip-teal"></i><span data-i18n="heroBadgeData">Base: dados simulados Grok v3</span></span>
+        <span><i class="status-chip chip-gold"></i><span data-i18n="heroBadgeNotValidated">Visualizador educacional — não é validação experimental</span></span>
+        <span class="hero-version">VT = 1 L <span aria-hidden="true">·</span> 02 out 2026</span>
+      </div>
+    </section>
+
+    <div class="section-nav-wrap">
+      <div class="section-nav" aria-label="Atalhos da página">
+        <a href="#levels" data-i18n="navLevels">Quatro níveis</a>
+        <a href="#explore" data-i18n="navExplore">Explorar dados</a>
+        <a href="#equations" data-i18n="navEquations">Equações</a>
+        <a href="#about" data-i18n="navAbout">Sobre o modelo</a>
+      </div>
+    </div>
+
+    <section class="intro-band section-shell" aria-labelledby="story-title">
+      <div class="section-kicker"><span>01</span><span data-i18n="storyKicker">A IDEIA EM UMA LINHA</span></div>
+      <div class="intro-content">
+        <h2 id="story-title" data-i18n="storyTitle">Uma cadeia energética, quatro perguntas de projeto.</h2>
+        <p data-i18n="storyText">O alumínio reage com água em meio alcalino para gerar H₂; o hidrogênio é convertido eletroquimicamente em eletricidade. A otimização amplia, em etapas, o conjunto de variáveis de projeto. O calor da reação Al–água permanece no reator: não é transferido para o balanço térmico da pilha neste caso-base.</p>
+      </div>
+      <div class="chain" aria-label="Alumínio para hidrogênio para eletricidade">
+        <div class="chain-node"><span class="chain-icon">Al</span><span data-i18n="chainAl">Alumínio + água</span></div>
+        <span class="chain-arrow" aria-hidden="true">→</span>
+        <div class="chain-node"><span class="chain-icon">H₂</span><span data-i18n="chainH2">Hidrogênio sustentável</span></div>
+        <span class="chain-arrow" aria-hidden="true">→</span>
+        <div class="chain-node"><span class="chain-icon icon-power">↗</span><span data-i18n="chainPower">Eletricidade na PEMFC</span></div>
+      </div>
+    </section>
+
+    <section class="section-shell levels-section" id="levels" aria-labelledby="levels-title">
+      <div class="section-heading">
+        <div>
+          <div class="section-kicker"><span>02</span><span data-i18n="levelsKicker">A OTIMIZAÇÃO, PASSO A PASSO</span></div>
+          <h2 id="levels-title" data-i18n="levelsTitle">Quatro níveis. Um espaço de projeto cada vez maior.</h2>
+          <p class="section-subtitle" data-i18n="levelsSub">Em cada nível, algumas decisões são liberadas enquanto as anteriores permanecem definidas.</p>
+        </div>
+        <div class="context-controls">
+          <label class="field-label" for="fluid-select" data-i18n="coolantLabel">Refrigerante</label>
+          <select id="fluid-select" class="select-control">
+            <option value="agua">Água</option>
+            <option value="ar">Ar</option>
+          </select>
+          <label class="field-label" for="structure-select" data-i18n="structureLabel">Estrutura interna</label>
+          <select id="structure-select" class="select-control">
+            <option value="1">MEA física</option>
+            <option value="0">Proporções do estudo clássico</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="level-track" id="level-cards" aria-label="Resultados dos quatro níveis"></div>
+      <div class="level-lower-grid">
+        <div class="panel level-chart-panel">
+          <div class="panel-heading">
+            <div><span class="panel-kicker" data-i18n="chartKicker">POTÊNCIA LÍQUIDA REPORTADA</span><h3 data-i18n="levelChartTitle">O ganho ao longo da hierarquia</h3></div>
+            <span class="unit-pill">kW · 1 L</span>
+          </div>
+          <div id="level-chart" class="chart-frame"></div>
+          <p class="chart-note" data-i18n="levelChartNote">Valores do conjunto Grok v3 para a combinação selecionada; a linha mostra a sequência da otimização, não uma série temporal.</p>
+        </div>
+        <aside class="panel level-detail" id="level-detail" aria-live="polite"></aside>
+      </div>
+      <p class="callout callout-info"><span class="callout-symbol" aria-hidden="true">i</span><span data-i18n="levelCaveat">Comparações entre água e ar são válidas dentro de cada configuração e das hipóteses desse conjunto. A troca de estrutura interna também altera as espessuras adotadas; não leia os dois ramos como uma única varredura controlada.</span></p>
+    </section>
+
+    <section class="explore-section" id="explore" aria-labelledby="explore-title">
+      <div class="section-shell">
+        <div class="section-heading">
+          <div>
+            <div class="section-kicker"><span>03</span><span data-i18n="exploreKicker">MEXA NOS DADOS, NÃO NO SOLVER</span></div>
+            <h2 id="explore-title" data-i18n="exploreTitle">Explore um ponto de operação simulado.</h2>
+            <p class="section-subtitle" data-i18n="exploreSub">Escolha a configuração e percorra a faixa de corrente. As curvas e os números vêm diretamente dos pontos simulados.</p>
+          </div>
+          <div class="case-picker">
+            <label class="field-label" for="curve-select" data-i18n="caseLabel">Caso de curva</label>
+            <select id="curve-select" class="select-control"></select>
+          </div>
+        </div>
+
+        <div class="explore-grid">
+          <div class="panel explore-control-panel">
+            <div class="control-panel-head"><span class="control-icon" aria-hidden="true">↔</span><div><h3 data-i18n="currentControlTitle">Corrente de operação</h3><p data-i18n="currentControlCopy">Arraste para percorrer os pontos da curva simulada.</p></div></div>
+            <div class="slider-topline"><label for="current-slider" data-i18n="currentLabel">Corrente da pilha</label><output id="current-output" for="current-slider">—</output></div>
+            <input id="current-slider" type="range" min="0" max="100" value="0" aria-label="Corrente de operação">
+            <div class="range-hints"><span id="current-min">—</span><span id="current-max">—</span></div>
+            <label class="toggle-row"><input id="show-infeasible" type="checkbox"><span class="toggle-track" aria-hidden="true"></span><span data-i18n="infeasibleToggle">Mostrar também pontos inviáveis</span></label>
+            <div id="feasibility-alert" class="feasibility-alert" hidden></div>
+            <div class="case-parameters" id="case-parameters"></div>
+            <div class="source-note" data-i18n="caseSourceNote">Curva mostrada como registrada no conjunto; pontos inviáveis ficam destacados e não devem ser lidos como condições recomendadas.</div>
+          </div>
+          <div class="metrics-grid" id="operating-metrics" aria-live="polite"></div>
+        </div>
+
+        <div class="charts-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div><span class="panel-kicker" data-i18n="netPowerKicker">BALANÇO ELÉTRICO</span><h3 data-i18n="powerChartTitle">Potência bruta, líquida e consumos</h3></div>
+              <span class="unit-pill">W</span>
+            </div>
+            <div class="legend" id="power-legend"></div>
+            <div id="power-chart" class="chart-frame chart-tall"></div>
+            <details class="data-table-details"><summary data-i18n="tableSummary">Ver tabela de pontos</summary><div id="power-table" class="table-wrap"></div></details>
+          </article>
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div><span class="panel-kicker" data-i18n="polarizationKicker">RESPOSTA ELETROQUÍMICA</span><h3 data-i18n="polarizationTitle">Polarização da pilha</h3></div>
+              <span class="unit-pill">V · A/cm²</span>
+            </div>
+            <div class="legend" id="polarization-legend"></div>
+            <div id="polarization-chart" class="chart-frame chart-tall"></div>
+            <p class="chart-note" data-i18n="polarizationNote">A tensão da curva já incorpora as perdas eletroquímicas modeladas; o arquivo de curvas não fornece a decomposição numérica individual de cada sobretensão.</p>
+          </article>
+        </div>
+
+        <div class="panel sweep-panel">
+          <div class="sweep-intro">
+            <div><span class="panel-kicker" data-i18n="sweepKicker">REFINAMENTO LOCAL DE ξs</span><h3 data-i18n="sweepTitle">Como a espessura adimensional altera a potência?</h3><p data-i18n="sweepCopy">Esta varredura mantém os demais parâmetros do caso indicados abaixo e seleciona cada ponto do refinamento.</p></div>
+            <div class="sweep-live"><span data-i18n="selectedXi">ξs selecionado</span><strong id="xi-output">—</strong><small id="xi-result">—</small></div>
+          </div>
+          <div class="sweep-grid">
+            <div>
+              <label class="slider-topline" for="xi-slider"><span data-i18n="xiControlLabel">Ponto da varredura</span><output id="xi-index-output">—</output></label>
+              <input id="xi-slider" type="range" min="0" max="39" value="0" aria-label="Ponto da varredura de xi s">
+              <div id="sweep-params" class="sweep-params"></div>
+              <div class="sweep-legend"><span><i class="legend-line line-teal"></i><span data-i18n="netPowerLabel">Potência líquida</span></span><span><i class="legend-dot dot-gold"></i><span data-i18n="selectedPoint">Ponto selecionado</span></span></div>
+            </div>
+            <div id="sweep-chart" class="chart-frame"></div>
+          </div>
+          <p class="chart-note" data-i18n="sweepNote">O máximo dessa varredura local não substitui o máximo hierárquico. Grade, condições fixas e convergência limitam o que se pode concluir.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell equations-section" id="equations" aria-labelledby="equations-title">
+      <div class="section-heading">
+        <div>
+          <div class="section-kicker"><span>04</span><span data-i18n="equationsKicker">ABRA A CAIXA-PRETA</span></div>
+          <h2 id="equations-title" data-i18n="equationsTitle">As equações por trás dos indicadores.</h2>
+          <p class="section-subtitle" data-i18n="equationsSub">Os cartões ligados ao ponto de operação acompanham a curva selecionada. O dimensionamento do refrigerante é uma demonstração algébrica independente.</p>
+        </div>
+      </div>
+      <div class="equation-grid">
+        <article class="panel equation-card equation-wide">
+          <div class="equation-top"><span class="equation-number">01</span><div><h3 data-i18n="eqVoltageTitle">Tensão: potencial menos perdas</h3><p data-i18n="eqVoltageCopy">Ativação, concentração e resistência ôhmica reduzem a tensão reversível.</p></div></div>
+          <div class="equation-display" aria-label="V da célula é igual ao potencial reversível menos perdas de ativação, concentração e queda ôhmica">V<sub>cel</sub> = E<sub>rev</sub> − η<sub>act,a</sub> − η<sub>act,c</sub> − η<sub>conc</sub> − I R<sub>ohm</sub></div>
+          <div class="equation-live"><span data-i18n="eqVoltageLive">Tensão no ponto selecionado</span><strong id="eq-voltage-live">—</strong><span class="live-caption" data-i18n="eqVoltageScope">Valor da simulação; perdas não decompostas nesta curva.</span></div>
+        </article>
+        <article class="panel equation-card">
+          <div class="equation-top"><span class="equation-number">02</span><div><h3 data-i18n="eqCurrentTitle">Corrente e consumo de H₂</h3><p data-i18n="eqCurrentCopy">A lei de Faraday liga a corrente total ao consumo estequiométrico no stack.</p></div></div>
+          <div class="equation-display">ṁ<sub>H₂,cons</sub> = <span class="fraction"><span>n<sub>pl</sub> I M<sub>H₂</sub></span><span>2 F</span></span></div>
+          <div class="equation-live"><span data-i18n="eqH2Live">Alimentação de H₂ no ponto</span><strong id="eq-h2-live">—</strong><span class="live-caption" data-i18n="eqH2Scope">A alimentação inclui o fator estequiométrico usado no caso.</span></div>
+        </article>
+        <article class="panel equation-card">
+          <div class="equation-top"><span class="equation-number">03</span><div><h3 data-i18n="eqPowerTitle">Potência que sobra</h3><p data-i18n="eqPowerCopy">O resultado líquido desconta as potências parasitas modeladas.</p></div></div>
+          <div class="equation-display">W<sub>net</sub> = W<sub>bruta</sub> − W<sub>aux</sub></div>
+          <div class="equation-live"><span data-i18n="eqAuxLive">Consumo auxiliar inferido da curva</span><strong id="eq-aux-live">—</strong><span class="live-caption" data-i18n="eqAuxScope">Calculado como Wbruta − Wnet nos dados simulados.</span></div>
+        </article>
+        <article class="panel equation-card">
+          <div class="equation-top"><span class="equation-number">04</span><div><h3 data-i18n="eqGeometryTitle">Geometria e células em série</h3><p data-i18n="eqGeometryCopy">As proporções externas definem Lx; o passo da célula define quantas placas cabem.</p></div></div>
+          <div class="equation-display equation-small">L<sub>x</sub> = <span class="root"><span>V<sub>T</sub> / (r<sub>yx</sub> r<sub>zx</sub>)</span><span>3</span></span>;&nbsp; n<sub>pl</sub> = int <span class="fraction"><span>L<sub>x</sub></span><span>L<sub>s</sub> + L<sub>cc</sub></span></span></div>
+          <div class="equation-live"><span data-i18n="eqGeometryLive">Número de células nesta curva</span><strong id="eq-geometry-live">—</strong><span class="live-caption" id="eq-geometry-scope">—</span></div>
+        </article>
+        <article class="panel equation-card equation-reactor">
+          <div class="equation-top"><span class="equation-number">05</span><div><h3 data-i18n="eqAlTitle">Alumínio → H₂: carga térmica no reator</h3><p data-i18n="eqAlCopy">O calor da reação é calculado à parte; ele não é transferido à PEMFC neste caso-base.</p></div></div>
+          <div class="equation-display">Al + 3 H₂O → Al(OH)₃ + <span class="fraction"><span>3</span><span>2</span></span> H₂</div>
+          <div class="equation-reactor-row"><div><span data-i18n="reactorHeatFormula">Estimativa no reator · ΔH = 16,552 MJ/kg Al</span><strong id="eq-heat-live">—</strong></div><div class="reactor-stamp" data-i18n="separateHeat">SEPARADO DA PILHA</div></div>
+          <p class="equation-footnote" data-i18n="eqAlScope">Estimativa pós-processada a partir do consumo de Al associado à alimentação simulada de H₂. Não é calor adicionado ao balanço térmico do stack.</p>
+        </article>
+        <article class="panel equation-card coolant-card">
+          <div class="equation-top"><span class="equation-number">06</span><div><h3 data-i18n="eqCoolantTitle">Vazão de refrigerante independente</h3><p data-i18n="eqCoolantCopy">Escolher a elevação admissível de temperatura determina a vazão necessária para uma carga térmica definida.</p></div></div>
+          <div class="equation-display">ṁ<sub>cf</sub> = <span class="fraction"><span>Q̇<sub>cool</sub></span><span>c<sub>p,cf</sub> ΔT<sub>cf</sub></span></span></div>
+          <div class="coolant-controls">
+            <label for="qcool-slider"><span data-i18n="qcoolLabel">Carga a remover (cenário)</span><output id="qcool-output">2,0 kW</output></label>
+            <input id="qcool-slider" type="range" min="0.5" max="10" step="0.1" value="2">
+            <label for="deltat-slider"><span data-i18n="deltaTLabel">Aumento admissível ΔT</span><output id="deltat-output">7,5 K</output></label>
+            <input id="deltat-slider" type="range" min="5" max="10" step="0.5" value="7.5">
+            <div class="coolant-result"><span id="coolant-result-label" data-i18n="requiredFlow">Vazão requerida do refrigerante</span><strong id="coolant-flow-output">—</strong></div>
+          </div>
+          <div id="coolant-chart" class="chart-frame chart-compact"></div>
+          <p class="equation-footnote" id="coolant-disclaimer">Demonstração algébrica; não representa um novo cálculo do balanço térmico da pilha.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-shell about-section" id="about" aria-labelledby="about-title">
+      <div class="section-heading">
+        <div>
+          <div class="section-kicker"><span>05</span><span data-i18n="aboutKicker">LEIA OS RESULTADOS COM CONTEXTO</span></div>
+          <h2 id="about-title" data-i18n="aboutTitle">O que este simulador mostra — e o que não mostra.</h2>
+        </div>
+      </div>
+      <div class="about-grid">
+        <article class="panel about-card"><span class="about-mark mark-fact">✓</span><h3 data-i18n="aboutFactTitle">O que está ancorado nos dados</h3><p data-i18n="aboutFactText">Hierarquia de máximos, curvas densas de corrente, tensão e potência, estados viáveis e quatro varreduras locais de ξs, extraídos do painel Grok v3. As curvas do ponto de operação são os pontos armazenados — não são regeneradas por um solver.</p></article>
+        <article class="panel about-card"><span class="about-mark mark-limit">!</span><h3 data-i18n="aboutLimitTitle">Limites e hipóteses</h3><p data-i18n="aboutLimitText">O conjunto registra VT = 1 L, Tmáx ≤ 353,15 K, ΔTcf ≤ 10 K, hcanal ≥ 0,1 mm no ramo físico e limites de perda de carga de 10% da pressão de entrada. Os máximos são resultados de simulação e grade, não evidência experimental nem prova de ótimo global.</p></article>
+        <article class="panel about-card"><span class="about-mark mark-separate">↗</span><h3 data-i18n="aboutHeatTitle">Dois balanços térmicos</h3><p data-i18n="aboutHeatText">A carga térmica Al–água é exibida separadamente, a partir da massa de Al associada à demanda de H₂. A bancada de vazão do refrigerante ilustra ṁ = Q̇/(cpΔT) com uma carga informada pelo usuário; não a vincula à reação nem afirma fechamento do balanço do stack.</p></article>
+      </div>
+      <details class="panel provenance-details">
+        <summary data-i18n="provenanceSummary">Procedência, versão e convenções</summary>
+        <div class="provenance-content">
+          <dl>
+            <div><dt data-i18n="provSource">Origem</dt><dd>VISUALIZACAO_ESTRUTURA_v3.html · pasta Resultados Finais Grok/v2</dd></div>
+            <div><dt data-i18n="provGenerated">Conjunto indicado como gerado</dt><dd>02/10/2026, 15:11 (America/Sao_Paulo)</dd></div>
+            <div><dt data-i18n="provCases">Dados incluídos nesta V2</dt><dd data-i18n="provCasesText">8 curvas I–V / potência, hierarquia de resultados e 4 varreduras locais de 40 pontos para ξs. Os 84.086 candidatos tabulados do HTML-fonte não foram copiados integralmente para manter o simulador leve.</dd></div>
+            <div><dt data-i18n="provStructure">MEA física</dt><dd data-i18n="provStructureText">Camadas sólidas fixas totalizam 0,67 mm no arquivo-fonte; canais ocupam o restante de Ls.</dd></div>
+            <div><dt data-i18n="provThermo">Calor específico da reação exibido</dt><dd data-i18n="provThermoText">16,552 MJ/kg de Al (valor da tese, usado apenas no pós-processamento independente).</dd></div>
+          </dl>
+          <p class="provenance-warning" data-i18n="provenanceWarning">A interface recalcula somente relações explícitas e marcadas como demonstração. Alterar controles não reexecuta o programa PEMfcell nem modifica os arquivos da pasta Grok.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">AluH₂ <b>PEMFC</b> Explorer</div>
+    <p data-i18n="footerText">Uma interface de exploração e ensino para resultados simulados — com procedência e limites à vista.</p>
+    <a href="#top" data-i18n="backTop">Voltar ao início ↑</a>
+  </footer>
+</body>
+</html>
